@@ -33,16 +33,13 @@
             <button type="button" class="btn btn-warning" id=current-button>Current Location</button>
 
 
-
-
-            <p class="emoji1">☀️</p>
             <h2 id="city">
                 City
             </h2>
 
 
             <div class="row">
-                <div class="col-6">
+                <div class="col-md">
                     <div class="clearfix">
                         <span class="temperature float-left" id="temp">
                             <strong>27</strong>
@@ -54,8 +51,9 @@
                             ºF
                         </a>
                     </div>
-
-                    <div class="col-12">
+                    <div class="container">
+                        <div class="row" id="description-elements">
+                    <div class="col-md">
                         <ul>
                             <li id="description">SUNNY</li>
                             <li id="date">
@@ -66,8 +64,12 @@
                             <li><strong>Humidity:</strong> <span id="humidity">76%</span></li>
                             <li><strong>Wind:</strong> <span id="wind">5km/h</span> </li>
                         </ul>
+                    <div class="col-md">    
+                        <p class="emoji1">☀️</p>
                     </div>
-
+                        </div>
+                    </div>
+                    </div>
                 </div>
                 <div class="container">
                     <div class="row row-cols-5">
@@ -80,10 +82,10 @@
                 </div>
             </div>
         </div>
-        <p class="github-link">
+        <footer class="github-link">
             <a href="https://github.com/paolabramlett/Paola-bramlett-final-project" target="_blank">
                 Open-source code</a> by Paola Vasquez-Bramlett
-        </p>   
+        </footer>   
         <script src="script.js"></script>
 </body>
 </html>
