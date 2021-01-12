@@ -109,3 +109,7 @@ div.container {
 #description-elements {
   height: 170px;
 }
+
+#forecast {
+  text-align: center;
+}

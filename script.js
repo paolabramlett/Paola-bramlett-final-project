@@ -1,3 +1,5 @@
+
+
 function showSearch(event) {
   event.preventDefault();
 
@@ -12,6 +14,37 @@ function showSearch(event) {
   let apiUrl = `${apiEndpoint}?q=${searchInput.value}&appid=${apiKey}&units=${units}`;
 
   axios.get(apiUrl).then(showTemp);
+
+  apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${searchInput.value}&appid=${apiKey}&units=${units}`;
+  axios.get(apiUrl).then(displayForecast);
+}
+
+function displayForecast(response) {
+  let forecastElement = document.querySelector("#forecast");
+  forecastElement.innerHTML = null;
+  let forecast = null;
+
+  for (let index = 0; index < 6; index++) {
+    forecast = response.data.list[index];
+    forecastElement.innerHTML += `
+    <div class="col-2">
+      <h6>
+        ${formatHours(forecast.dt * 1000)}
+      </h6>
+      <img
+        src="http://openweathermap.org/img/wn/${
+          forecast.weather[0].icon
+        }@2x.png"
+      />
+      <div class="weather-forecast-temperature">
+        <strong>
+          ${Math.round(forecast.main.temp_max)}°
+        </strong>
+        ${Math.round(forecast.main.temp_min)}°
+      </div>
+    </div>
+  `;
+  }
 }
 
 let searchForm = document.querySelector("#search-city-form");
@@ -32,7 +65,7 @@ console.log(response.data);
   let dateElement = document.querySelector("#date");
 
   celsiusTemp = temp; 
-  farenheitTemp = (feelsLike * 9) / 5 + 32;
+  farenheitTemp = Math.round((feelsLike * 9) / 5 + 32);
 
   feels.innerHTML = `${feelsLike}ºC | ${farenheitTemp}ºF`;
   humidity.innerHTML = `${response.data.main.humidity}%`;
@@ -74,19 +107,9 @@ farTemp.addEventListener("click", showFar);
 
 
 
-let currentTime = new Date();
+function formatDate(timestamp) {
+  let date = new Date(timestamp);
 
-function formatDate(date) {
-  let hours = date.getHours();
-  if (hours < 10) {
-    hours = `0${hours}`;
-  }
-  let minutes = date.getMinutes();
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
-
-  let dayIndex = date.getDay();
   let days = [
     "Sunday",
     "Monday",
@@ -96,14 +119,23 @@ function formatDate(date) {
     "Friday",
     "Saturday"
   ];
-
-  let day = days[dayIndex];
-
-  return `${day} ${hours}:${minutes}`;
+  let day = days[date.getDay()];
+  return `${day} ${formatHours(timestamp)}`;
 }
 
-let date = document.querySelector("#date");
-date.innerHTML = formatDate(currentTime);
+function formatHours(timestamp) {
+  let date = new Date(timestamp);
+  let hours = date.getHours();
+  if (hours < 10) {
+    hours = `0${hours}`;
+  }
+  let minutes = date.getMinutes();
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+
+  return `${hours}:${minutes}`;
+}
 
 
 
@@ -119,6 +151,7 @@ function showCurrentTemperature(response) {
   let humidity = document.querySelector("#humidity");
   let wind = document.querySelector("#wind");
   let feels = document.querySelector("#feels");
+  let dateElement = document.querySelector("#date");
   
 
   feels.innerHTML = `${feelsLike}ºC`;
@@ -126,6 +159,7 @@ function showCurrentTemperature(response) {
   wind.innerHTML = `${response.data.wind.speed} km/h`;
   description.innerHTML = response.data.weather[0].description;
   tempElement.innerHTML = temperature;
+  dateElement.innerHTML = formatDate(response.data.dt * 1000);
 
   let city = document.querySelector("#city");
   city.innerHTML = response.data.name;
