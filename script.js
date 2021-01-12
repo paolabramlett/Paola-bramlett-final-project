@@ -2,6 +2,7 @@ function getSearch(event) {
   event.preventDefault();
   let cityInput = document.querySelector("#city-input");
   search(cityInput.value);
+
 }
 
 function search(city) {
@@ -65,6 +66,8 @@ console.log(response.data);
 
   celsiusTemp = temp; 
   farenheitTemp = Math.round((feelsLike * 9) / 5 + 32);
+
+  
 
   feels.innerHTML = `${feelsLike}ºC | ${farenheitTemp}ºF`;
   humidity.innerHTML = `${response.data.main.humidity}%`;
@@ -137,56 +140,4 @@ function formatHours(timestamp) {
 }
 
 
-let city = document.querySelector("#city");
-city.innerHTML = search();
-
 search("London");
-
-//////// This must go!
-
-
-function showCurrentTemperature(response) {
-  console.log(data);
-
-  let temperature = Math.round(response.data.main.temp);
-  let feelsLike = Math.round(response.data.main.feels_like);
-  let description = document.querySelector("#description");
-  let tempElement = document.querySelector("#temp");
-  let humidity = document.querySelector("#humidity");
-  let wind = document.querySelector("#wind");
-  let feels = document.querySelector("#feels");
-  let dateElement = document.querySelector("#date");
-  
-
-  feels.innerHTML = `${feelsLike}ºC`;
-  humidity.innerHTML = `${response.data.main.humidity}%`;
-  wind.innerHTML = `${Math.round(response.data.wind.speed)} km/h`;
-  description.innerHTML = response.data.weather[0].description;
-  tempElement.innerHTML = temperature;
-  dateElement.innerHTML = formatDate(response.data.dt * 1000);
-
-  let city = document.querySelector("#city");
-  city.innerHTML = response.data.name;
-}
-
-function retrievePosition(position) {
-  let apiKey = "21bc8603ffd9249d88b5d175d531dd75";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
-
-  axios.get(apiUrl).then(showCurrentTemperature);
-  
-}
-
-function getCurrentPosition(event){
-  event.preventDefault();
-  navigator.geolocation.getCurrentPosition(retrievePosition);
-}
-
-
-let locationButton = document.querySelector("#current-button");
-locationButton.addEventListener("Click", getCurrentPosition);
-
-function displayTemperature(response) {
-  console.log(response.data.main.temp);
-}
-
