@@ -5,6 +5,7 @@ function getSearch(event) {
 
 }
 
+
 function search(city) {
 
   let units = "metric";
@@ -16,6 +17,9 @@ function search(city) {
 
   apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=${units}`;
   axios.get(apiUrl).then(showForecast);
+
+  let cityElement = document.querySelector("#city");
+  cityElement.innerHTML = `${city}`;
 }
 
 
@@ -138,6 +142,5 @@ function formatHours(timestamp) {
 
   return `${hours}:${minutes}`;
 }
-
 
 search("London");
