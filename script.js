@@ -1,25 +1,24 @@
-
-
-function showSearch(event) {
+function getSearch(event) {
   event.preventDefault();
+  let cityInput = document.querySelector("#city-input");
+  search(cityInput.value);
+}
 
-  let searchInput = document.querySelector("#city-input");
-  let city = document.querySelector("#city");
-
-  city.innerHTML = `${searchInput.value}`;
+function search(city) {
 
   let units = "metric";
   let apiKey = "21bc8603ffd9249d88b5d175d531dd75";
   let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
-  let apiUrl = `${apiEndpoint}?q=${searchInput.value}&appid=${apiKey}&units=${units}`;
+  let apiUrl = `${apiEndpoint}?q=${city}&appid=${apiKey}&units=${units}`;
 
   axios.get(apiUrl).then(showTemp);
 
-  apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${searchInput.value}&appid=${apiKey}&units=${units}`;
-  axios.get(apiUrl).then(displayForecast);
+  apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=${units}`;
+  axios.get(apiUrl).then(showForecast);
 }
 
-function displayForecast(response) {
+
+function showForecast(response) {
   let forecastElement = document.querySelector("#forecast");
   forecastElement.innerHTML = null;
   let forecast = null;
@@ -48,7 +47,7 @@ function displayForecast(response) {
 }
 
 let searchForm = document.querySelector("#search-city-form");
- searchForm.addEventListener("submit", showSearch);
+ searchForm.addEventListener("submit", getSearch);
 
 function showTemp(response) {
 console.log(response.data);
@@ -69,7 +68,7 @@ console.log(response.data);
 
   feels.innerHTML = `${feelsLike}ºC | ${farenheitTemp}ºF`;
   humidity.innerHTML = `${response.data.main.humidity}%`;
-  wind.innerHTML = `${response.data.wind.speed} km/h`;
+  wind.innerHTML = `${Math.round(response.data.wind.speed)} km/h`;
   tempElement.innerHTML = temp;
   description.innerHTML = response.data.weather[0].description;
   emojiElement.setAttribute("src", 
@@ -138,7 +137,12 @@ function formatHours(timestamp) {
 }
 
 
+let city = document.querySelector("#city");
+city.innerHTML = search();
 
+search("London");
+
+//////// This must go!
 
 
 function showCurrentTemperature(response) {
@@ -156,7 +160,7 @@ function showCurrentTemperature(response) {
 
   feels.innerHTML = `${feelsLike}ºC`;
   humidity.innerHTML = `${response.data.main.humidity}%`;
-  wind.innerHTML = `${response.data.wind.speed} km/h`;
+  wind.innerHTML = `${Math.round(response.data.wind.speed)} km/h`;
   description.innerHTML = response.data.weather[0].description;
   tempElement.innerHTML = temperature;
   dateElement.innerHTML = formatDate(response.data.dt * 1000);
