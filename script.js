@@ -21,6 +21,7 @@ function showTemp(response) {
 console.log(response.data);
 
   let temp = Math.round(response.data.main.temp);
+
   let feelsLike = Math.round(response.data.main.feels_like);
   let description = document.querySelector("#description");
   let tempElement = document.querySelector("#temp");
@@ -29,6 +30,8 @@ console.log(response.data);
   let feels = document.querySelector("#feels");
   let emojiElement = document.querySelector("#emoji1");
   let dateElement = document.querySelector("#date");
+
+  celsiusTemp = temp; 
 
   feels.innerHTML = `${feelsLike}ºC`;
   humidity.innerHTML = `${response.data.main.humidity}%`;
@@ -46,16 +49,19 @@ console.log(response.data);
 function showFar(event) {
   event.preventDefault();
 
+  let farTemp = (celsiusTemp * 9) / 5 + 32;
   let tempElement = document.querySelector("#temp");
-  tempElement.innerHTML = 66;
+  tempElement.innerHTML = Math.round(farTemp);
 }
 
 function showCel(event) {
   event.preventDefault();
 
   let tempElement = document.querySelector("#temp");
-  tempElement.innerHTML = 19;
+  tempElement.innerHTML = celsiusTemp;
 }
+
+let celsiusTemp = null;
 
 let celTemp = document.querySelector("#cel");
 celTemp.addEventListener("click", showCel);
