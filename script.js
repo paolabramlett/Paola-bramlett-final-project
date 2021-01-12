@@ -18,6 +18,7 @@ let searchForm = document.querySelector("#search-city-form");
  searchForm.addEventListener("submit", showSearch);
 
 function showTemp(response) {
+console.log(response.data);
 
   let temp = Math.round(response.data.main.temp);
   let feelsLike = Math.round(response.data.main.feels_like);
@@ -26,11 +27,19 @@ function showTemp(response) {
   let humidity = document.querySelector("#humidity");
   let wind = document.querySelector("#wind");
   let feels = document.querySelector("#feels");
+  let emojiElement = document.querySelector("#emoji1");
+  let dateElement = document.querySelector("#date");
+
   feels.innerHTML = `${feelsLike}ºC`;
   humidity.innerHTML = `${response.data.main.humidity}%`;
   wind.innerHTML = `${response.data.wind.speed} km/h`;
   tempElement.innerHTML = temp;
   description.innerHTML = response.data.weather[0].description;
+  emojiElement.setAttribute("src", 
+  `https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`);
+  emojiElement.setAttribute("alt",
+  response.data.weather[0].description);
+  dateElement.innerHTML = formatDate(response.data.dt * 1000);
 
 }
 
@@ -92,7 +101,7 @@ date.innerHTML = formatDate(currentTime);
 
 
 function showCurrentTemperature(response) {
-  console.log(response);
+  console.log(data);
 
   let temperature = Math.round(response.data.main.temp);
   let feelsLike = Math.round(response.data.main.feels_like);
@@ -101,6 +110,7 @@ function showCurrentTemperature(response) {
   let humidity = document.querySelector("#humidity");
   let wind = document.querySelector("#wind");
   let feels = document.querySelector("#feels");
+  
 
   feels.innerHTML = `${feelsLike}ºC`;
   humidity.innerHTML = `${response.data.main.humidity}%`;
@@ -128,4 +138,8 @@ function getCurrentPosition(event){
 
 let locationButton = document.querySelector("#current-button");
 locationButton.addEventListener("Click", getCurrentPosition);
+
+function displayTemperature(response) {
+  console.log(response.data.main.temp);
+}
 
