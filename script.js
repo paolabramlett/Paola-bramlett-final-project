@@ -32,8 +32,9 @@ console.log(response.data);
   let dateElement = document.querySelector("#date");
 
   celsiusTemp = temp; 
+  farenheitTemp = (feelsLike * 9) / 5 + 32;
 
-  feels.innerHTML = `${feelsLike}ºC`;
+  feels.innerHTML = `${feelsLike}ºC | ${farenheitTemp}ºF`;
   humidity.innerHTML = `${response.data.main.humidity}%`;
   wind.innerHTML = `${response.data.wind.speed} km/h`;
   tempElement.innerHTML = temp;
@@ -45,6 +46,7 @@ console.log(response.data);
   dateElement.innerHTML = formatDate(response.data.dt * 1000);
 
 }
+// I decided to change Precipitation for "Feels like temperature"
 
 function showFar(event) {
   event.preventDefault();
@@ -62,6 +64,7 @@ function showCel(event) {
 }
 
 let celsiusTemp = null;
+let farenheitTemp = null;
 
 let celTemp = document.querySelector("#cel");
 celTemp.addEventListener("click", showCel);
